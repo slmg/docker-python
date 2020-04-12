@@ -1,10 +1,5 @@
 FROM ubuntu:focal
 
-# Create user with deterministic uid, alongside homedir skeleton.
-RUN useradd -m moby -u 1000 && \
-    mkdir /home/moby/app && \
-    chown -R moby:moby /home/moby/app
-
 # Set system locale to prevent plenty of weird bugs.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         locales && \
@@ -25,12 +20,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Don't write .pyc files, superflous in an ephemeral container.
 ENV PYTHONDONTWRITEBYTECODE True
 
-# Set up venv "activation" boilerplate.
+# Create user with deterministic uid.
+RUN useradd -m moby -u 1000
+
+# Set up venv location and "activate" it.
 ENV VIRTUAL_ENV /home/moby/.venv
 ENV PATH ${VIRTUAL_ENV}/bin:${PATH}
 
-USER moby
-
-RUN python3 -m venv ${VIRTUAL_ENV}
-
-WORKDIR /home/moby/app
+# Create venv and grant correct user perms.
+RUN python3 -m venv ${VIRTUAL_ENV} && \
+    chown -R moby:moby ${VIRTUAL_ENV}
