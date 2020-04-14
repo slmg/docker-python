@@ -9,6 +9,7 @@ DISABLE_AUTO_UPDATE="true"
 
 # ohmyzsh plugins to load
 plugins=(
+    vi-mode
     git
     pip
 )
