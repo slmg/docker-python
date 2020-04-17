@@ -24,7 +24,7 @@ COPY --chown=moby:moby .zshrc requirements-dev.in ./
 # Install oh-my-zsh and save Github's public key ahead of ssh usage.
 RUN wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh && \
     sh install.sh --unattended --keep-zshrc && \
-    rm install.sh .wget-hsts && \
+    rm install.sh .wget-hsts .bash_logout .bashrc .profile && \
     mkdir --mode=700 .ssh && \
     ssh-keyscan -H github.com > .ssh/known_hosts && \
     chmod 600 .ssh/known_hosts && \
@@ -36,10 +36,9 @@ RUN wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.
     fi
 
 # Set up python dev env.
-RUN pip install --no-cache-dir \
-        pip-tools \
-        wheel && \
+RUN pip install pip-tools wheel && \
     pip-compile requirements-dev.in && \
-    pip install --no-cache-dir -r requirements-dev.txt
+    pip install -r requirements-dev.txt && \
+    rm -rf .cache
 
 CMD [ "zsh" ]
