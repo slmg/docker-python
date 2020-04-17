@@ -7,6 +7,23 @@ Various Python-related Docker images
 * [`latest`](https://github.com/slmg/docker-python/blob/master/generic/Dockerfile), [`generic`](https://github.com/slmg/docker-python/blob/master/generic/Dockerfile)
 * [`devenv`](https://github.com/slmg/docker-python/blob/master/devenv/Dockerfile)
 
+Note: these tags are mutable. Freeze an image environment by using its digest instead:
+
+```sh
+# extract
+docker inspect --format='{{index .RepoDigests 0}}' slmg/python:devenv
+slmg/python@sha256:ba2ec02ff67f2fc14bb5e6b4dc2e5f6ae4cec60faffa2fda717e14ad359ebb28
+
+# pull
+docker image pull slmg/python@sha256:ba2ec02ff67f2fc14bb5e6b4dc2e5f6ae4cec60faffa2fda717e14ad359ebb28
+```
+
+```Dockerfile
+# build
+FROM slmg/python@sha256:ba2ec02ff67f2fc14bb5e6b4dc2e5f6ae4cec60faffa2fda717e14ad359ebb28
+RUN ...
+```
+
 ## Usage
 
 ### latest, generic
