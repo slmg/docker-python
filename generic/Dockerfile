@@ -24,7 +24,7 @@ ENV PYTHONDONTWRITEBYTECODE True
 RUN useradd -m moby -u 1000
 
 # Set up venv location and "activate" it.
-ENV VIRTUAL_ENV /home/moby/.venv
+ENV VIRTUAL_ENV /home/moby/venv
 ENV PATH ${VIRTUAL_ENV}/bin:${PATH}
 
 # Create venv and grant correct user perms.
