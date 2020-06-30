@@ -11,9 +11,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         tree \
         less \
         jq \
+        shellcheck \
         openssh-client && \
     rm -rf /var/lib/apt/lists/* && \
-    chsh -s /bin/zsh moby
+    chsh -s /bin/zsh moby && \
+    curl -L  https://github.com/hadolint/hadolint/releases/download/v1.18.0/hadolint-Linux-x86_64 -o hadolint && \
+    echo "f9bc9de12438b463ca84e77fde70b07b155d4da07ca21bc3f4354a62c6199db4  hadolint" | sha256sum --check --status --strict && \
+    chmod +x hadolint && \
+    mv hadolint /usr/local/bin/
 
 USER moby
 
